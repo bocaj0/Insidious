@@ -5,8 +5,8 @@ current_page = 0
 
 def dashboard_setup():
     # setting up the app's basic window settings
-    root.title("Insidious 1.0")
-    root.geometry("1280x720")
+    global current_page
+    current_page = 0
 
     # Specify Grid
     # row specifications
@@ -33,8 +33,11 @@ def dashboard_setup():
 # MAIN LOOP
 if __name__ == "__main__":
     root = Tk()
+    root.title("Insidious 1.0")
+    root.geometry("1280x720")
+
     # Sets up the home page GUI
-    home_page_setup()
+    dashboard_setup()
 
     root.mainloop()
 
