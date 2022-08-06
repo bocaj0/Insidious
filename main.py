@@ -1,98 +1,98 @@
 from tkinter import *
 
-# page tracker
-current_page = 0
+
+class MainGui:
+    def __init__(self, app, title, geometry):
+
+        self.root = app
+        self.root.title(title)
+        self.root.geometry(geometry)
+        self.pageshow = LoginPage(self, self.root)
+
+    def change_page(self, page):
+        self.page = page
+
+        if self.page == 0:
+            self.pageshow = LoginPage(self, self.root)
+
+        if self.page == 1:
+            self.pageshow = BasePage(self, self.root)
 
 
-# dashboard labels
-dashboard_header = ''
+class LoginPage:
+    def __init__(self, parent, window):
+        self.parent = parent
+        self.frame = Frame(window)
+        self.frame.pack()
+
+        # Welcome button
+        self.welcome_lbl = Label(self.frame, text='Welcome!')
+        self.welcome_lbl.grid(row=0, column=1)
+
+        # Username
+        self.username_lbl = Label(self.frame, text='Username: ')
+        self.username_lbl.grid(row=1, column=0)
+        self.username_entry = Entry(self.frame)
+        self.username_entry.grid(row=1, column=1)
+
+        # Password
+        self.password_lbl = Label(self.frame, text='Password: ')
+        self.password_lbl.grid(row=2, column=0)
+        self.password_entry = Entry(self.frame)
+        self.password_entry.grid(row=2, column=1)
+
+        # login button
+        self.login = Button(self.frame, text='Login', command=self.clicked)
+        self.login.grid(row=3, column=1)
+
+    def clicked(self):
+        self.frame.destroy()
+        self.parent.change_page(1)
 
 
-# tasks labels
-tasks_header = ''
+class BasePage:
+    def __init__(self, parent, window):
+        self.parent = parent
+        self.frame = Frame(window)
+        self.frame.pack()
+
+        self.header = Label(self.frame, text="")
+        self.header.grid(row=0, column=1)
+
+        # Create Buttons
+        self.dashboard_btn = Button(self.frame, text="Dashboard", command=self.dashboard_setup)
+        self.tasks_btn = Button(self.frame, text="Tasks", command=self.tasks_setup)
+        self.settings_btn = Button(self.frame, text="Settings", command=self.settings_setup)
+
+        # Set grid
+        self.dashboard_btn.grid(row=0, column=0, sticky="NW")
+        self.tasks_btn.grid(row=1, column=0, sticky="NW")
+        self.settings_btn.grid(row=2, column=0, sticky="NW")
+
+    def dashboard_setup(self):
+        # creates dashboard page header
+        self.header.grid_forget()
+        self.header = Label(self.frame, text="Dashboard")
+        self.header.grid(row=0, column=1)
+
+    def tasks_setup(self):
+        # creates tasks page header
+        self.header.grid_forget()
+        self.header = Label(self.frame, text="Tasks")
+        self.header.grid(row=0, column=1)
+
+    def settings_setup(self):
+        # creates settings page header
+        self.header.grid_forget()
+        self.header = Label(self.frame, text="Settings")
+        self.header.grid(row=0, column=1)
+
+    def clicked(self):
+        self.frame.destroy()
+        self.parent.change_page(0)
 
 
-# settings labels
-settings_header = ''
-
-
-def tab_setup():
-    # setting up the app's basic window settings
-    global current_page
-    current_page = 0
-
-    # Specify Grid
-    # row specifications
-    root.rowconfigure(0, weight=1)
-    root.rowconfigure(1, weight=1)
-    root.rowconfigure(2, weight=1)
-    root.rowconfigure(3, weight=3)
-
-    # column specifications
-    root.columnconfigure(0, weight=1)
-    root.columnconfigure(1, weight=8)
-
-    # Create Buttons
-    dashboard_btn = Button(root, text="Dashboard", command=dashboard_setup())
-    tasks_btn = Button(root, text="Tasks", command=tasks_setup())
-    settings_btn = Button(root, text="Settings", command=settings_setup())
-
-    # Set grid
-    dashboard_btn.grid(row=0, column=0, sticky="NSEW")
-    tasks_btn.grid(row=1, column=0, sticky="NSEW")
-    settings_btn.grid(row=2, column=0, sticky="NSEW")
-
-
-def create_labels():
-    global dashboard_header, tasks_header, settings_header
-    dashboard_header = Label(root, text="Dashboard")
-    dashboard_header.grid(row=0, column=1, sticky="NSEW")
-
-    tasks_header = Label(root, text="Tasks")
-    tasks_header.grid(row=0, column=1, sticky="NSEW")
-
-    settings_header = Label(root, text="Settings")
-    settings_header.grid(row=0, column=1, sticky="NSEW")
-
-
-def forget_buttons():
-    global dashboard_header, tasks_header, settings_header
-    dashboard_header.pack_forget()
-    tasks_header.pack_forget()
-    settings_header.pack_forget()
-
-
-def dashboard_setup():
-    forget_buttons()
-    # creates dashboard page header
-    global dashboard_header
-    dashboard_header.pack
-
-
-def tasks_setup():
-    forget_buttons()
-    # creates tasks page header
-    global tasks_header
-    tasks_header.pack
-
-
-def settings_setup():
-    forget_buttons()
-    # creates settings page header
-    global settings_header
-    settings_header.pack
-
-
-# MAIN LOOP
-if __name__ == "__main__":
+if __name__ == '__main__':
     root = Tk()
-    root.title("Insidious 1.0")
-    root.geometry("1280x720")
-
-    # Sets up the home page GUI
-    create_labels()
-    tab_setup()
-
+    MainGui(root, "Insidious 1.0", "1280x720")
     root.mainloop()
-
-
