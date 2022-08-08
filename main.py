@@ -1,6 +1,8 @@
 from tkinter import *
+from pathlib import Path
 
 # Tracks the page of the app GUI
+website_file_location = ''
 curr_page = 0
 prev_page = 0
 
@@ -68,7 +70,16 @@ def page_change(current, num):
             current.show_page = TasksPage(current, current.window)
     if curr_page == 2:
         if prev_page != 2:
-            current.show_page = SettingsPage(current, current.window)
+            current.show_page = WebsitesPage(current, current.window)
+    if curr_page == 3:
+        if prev_page != 3:
+            current.show_page = PaymentPage(current, current.window)
+    if curr_page == 4:
+        if prev_page != 4:
+            current.show_page = ProxiesPage(current, current.window)
+    if curr_page == 5:
+        if prev_page != 5:
+            current.show_page = CaptchaPage(current, current.window)
 
     prev_page = num
 
@@ -83,15 +94,21 @@ class BasePage:
 
         # Create Buttons
         self.dashboard_btn = Button(self.frame, text="\tDashboard\t", command=lambda: page_change(self, 0))
-        self.tasks_btn = Button(self.frame, text="\t    Tasks\t\t", command=lambda: page_change(self, 1))
-        self.settings_btn = Button(self.frame, text="\t  Settings\t", command=lambda: page_change(self, 2))
+        self.tasks_btn = Button(self.frame, text="\t   Tasks\t\t", command=lambda: page_change(self, 1))
+        self.accounts_btn = Button(self.frame, text="\tWebsites\t\t", command=lambda: page_change(self, 2))
+        self.payment_btn = Button(self.frame, text="        Payment/Shipping\t", command=lambda: page_change(self, 3))
+        self.proxies_btn = Button(self.frame, text="\t  Proxies\t\t", command=lambda: page_change(self, 4))
+        self.captcha_btn = Button(self.frame, text="\t Captcha\t\t", command=lambda: page_change(self, 5))
         self.logout_btn = Button(self.frame, text="\t  Logout\t\t", command=self.clicked)
 
         # Set grid
         self.dashboard_btn.grid(row=0, column=0)
         self.tasks_btn.grid(row=1, column=0)
-        self.settings_btn.grid(row=2, column=0)
-        self.logout_btn.grid(row=3, column=0)
+        self.accounts_btn.grid(row=2, column=0)
+        self.payment_btn.grid(row=3, column=0)
+        self.proxies_btn.grid(row=4, column=0)
+        self.captcha_btn.grid(row=5, column=0)
+        self.logout_btn.grid(row=6, column=0)
 
         self.show_page = DashboardPage(self, self.window)
 
@@ -129,17 +146,90 @@ class TasksPage:
         self.login.grid(row=3, column=1)
 
 
-class SettingsPage:
+# destroys the popup window for adding a website
+def add_website(window, entry):
+    global website_file_location
+    website_file_location = str(Path.cwd()) + "\\websites.txt"
+
+    path = Path(website_file_location)
+
+    if path.is_file():
+        with open(website_file_location, 'a') as f:
+            f.write('\n' + entry.get())
+    else:
+        with open(website_file_location, 'w') as f:
+            f.write(entry.get())
+
+    window.destroy()
+
+
+class WebsitesPage:
+    def __init__(self, parent, window):
+        self.window = window
+        self.frame = Frame(window, bg="blue")
+        self.frame.pack(side=LEFT, anchor='nw', fill='both', expand=TRUE)
+
+        # Welcome button
+        self.welcome_lbl = Label(self.frame, text='WEBSITES PAGE')
+        self.welcome_lbl.grid(row=0, column=1)
+
+        # Login button
+        self.login = Button(self.frame, text='ADD WEBSITE', bg="purple", fg='white', command=self.add_website_popup)
+        self.login.grid(row=0, column=2)
+
+    def add_website_popup(self):
+        # Create a Toplevel window
+        self.website_popup = Toplevel(self.window)
+        self.website_popup.geometry('400x400')
+
+        # Create an Entry Widget in the Toplevel window
+        entry = Entry(self.website_popup, width=25)
+        entry.pack()
+
+        # Create a Button Widget in the Toplevel Window
+        add_btn = Button(self.website_popup, text="Add Website", command=lambda: add_website(self.website_popup, entry))
+        add_btn.pack(pady=5, side=TOP)
+
+
+class PaymentPage:
+    def __init__(self, parent, window):
+        self.frame = Frame(window, bg="yellow")
+        self.frame.pack(side=LEFT, anchor='nw', fill='both', expand=TRUE)
+
+        # Welcome button
+        self.welcome_lbl = Label(self.frame, text='PAYMENT PAGE')
+        self.welcome_lbl.grid(row=0, column=1)
+
+        # Login button
+        self.login = Button(self.frame, text='TEST2')
+        self.login.grid(row=3, column=1)
+
+
+class ProxiesPage:
     def __init__(self, parent, window):
         self.frame = Frame(window, bg="blue")
         self.frame.pack(side=LEFT, anchor='nw', fill='both', expand=TRUE)
 
         # Welcome button
-        self.welcome_lbl = Label(self.frame, text='SETTINGS PAGE')
+        self.welcome_lbl = Label(self.frame, text='Proxies PAGE')
         self.welcome_lbl.grid(row=0, column=1)
 
         # Login button
         self.login = Button(self.frame, text='TEST3')
+        self.login.grid(row=3, column=1)
+
+
+class CaptchaPage:
+    def __init__(self, parent, window):
+        self.frame = Frame(window, bg="yellow")
+        self.frame.pack(side=LEFT, anchor='nw', fill='both', expand=TRUE)
+
+        # Welcome button
+        self.welcome_lbl = Label(self.frame, text='CAPTCHA PAGE')
+        self.welcome_lbl.grid(row=0, column=1)
+
+        # Login button
+        self.login = Button(self.frame, text='TEST2')
         self.login.grid(row=3, column=1)
 
 
