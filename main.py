@@ -104,7 +104,7 @@ class BasePage:
 class DashboardPage:
     def __init__(self, parent, window):
         self.frame = Frame(window, bg="green")
-        self.frame.pack()
+        self.frame.pack(side=LEFT, anchor='nw', fill='both', expand=TRUE)
 
         # Welcome button
         self.welcome_lbl = Label(self.frame, text='DASHBOARD PAGE')
@@ -118,7 +118,7 @@ class DashboardPage:
 class TasksPage:
     def __init__(self, parent, window):
         self.frame = Frame(window, bg="yellow")
-        self.frame.pack()
+        self.frame.pack(side=LEFT, anchor='nw', fill='both', expand=TRUE)
 
         # Welcome button
         self.welcome_lbl = Label(self.frame, text='TASKS PAGE')
@@ -132,7 +132,7 @@ class TasksPage:
 class SettingsPage:
     def __init__(self, parent, window):
         self.frame = Frame(window, bg="blue")
-        self.frame.pack()
+        self.frame.pack(side=LEFT, anchor='nw', fill='both', expand=TRUE)
 
         # Welcome button
         self.welcome_lbl = Label(self.frame, text='SETTINGS PAGE')
